@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book a House</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 500px; margin: auto; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; }
+        input, select, button { width: 100%; padding: 8px; }
+        .appointments { margin-top: 30px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Book a House</h2>
+        <form id="bookingForm">
+            <div class="form-group">
+                <label for="house">Select House:</label>
+                <select id="house" required>
+                    <option value="">Choose...</option>
+                    <option value="House 1">House 1</option>
+                    <option value="House 2">House 2</option>
+                    <option value="House 3">House 3</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="date">Appointment Date:</label>
+                <input type="date" id="date" required>
+            </div>
+            <div class="form-group">
+                <label for="time">Appointment Time:</label>
+                <input type="time" id="time" required>
+            </div>
+            <button type="submit">Book Appointment</button>
+        </form>
+
+        <div class="appointments">
+            <h3>Booked Appointments</h3>
+            <ul id="appointmentsList"></ul>
+        </div>
+    </div>
+    <script>
+        const form = document.getElementById('bookingForm');
+        const appointmentsList = document.getElementById('appointmentsList');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const house = document.getElementById('house').value;
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+
+            if (house && date && time) {
+                const li = document.createElement('li');
+                li.textContent = `House: ${house}, Date: ${date}, Time: ${time}`;
+                appointmentsList.appendChild(li);
+                form.reset();
+            }
+        });
+    </script>
+</body>
+</html>
