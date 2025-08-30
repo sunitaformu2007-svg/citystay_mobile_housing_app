@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cameroon Map - Locate Houses</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    #map { height: 600px; width: 100%; }
+  </style>
+</head>
+<body>
+  <h2>Cameroon Map - Locate Houses</h2>
+  <div id="map"></div>
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    // Initialize the map centered on Cameroon
+    var map = L.map('map').setView([7.3697, 12.3547], 6);
+
+    // Add OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Load Cameroon regions GeoJSON from a CDN
+    fetch('https://raw.githubusercontent.com/datasets/geo-admin1-cameroon/master/data/geojson/admin1.geojson')
+      .then(function(response) { return response.json(); })
+      .then(function(geojson) {
+        // Add regions to the map
+        L.geoJSON(geojson, {
+          style: function(feature) {
+            return {
+              color: '#3388ff',
+              weight: 2,
+              fillOpacity: 0.1
+            };
+          },
+          onEachFeature: function(feature, layer) {
+            // Show region name on click
+            if (feature.properties && feature.properties.NAME_1) {
+              layer.bindPopup('<b>' + feature.properties.NAME_1 + '</b>');
+            }
+          }
+        }).addTo(map);
+      });
+
+    // Major towns and cities in Cameroon
+    var towns = [
+      { name: 'Yaoundé', coords: [3.848, 11.502] },
+      { name: 'Douala', coords: [4.0511, 9.7679] },
+      { name: 'Garoua', coords: [9.3014, 13.3936] },
+      { name: 'Bamenda', coords: [5.9631, 10.1591] },
+      { name: 'Bafoussam', coords: [5.4778, 10.4176] },
+      { name: 'Maroua', coords: [10.5956, 14.3247] },
+      { name: 'Ngaoundéré', coords: [7.3278, 13.5847] },
+      { name: 'Bertoua', coords: [4.5833, 13.6833] },
+      { name: 'Ebolowa', coords: [2.9167, 11.1667] },
+      { name: 'Limbe', coords: [4.0236, 9.2065] },
+      { name: 'Kumba', coords: [4.636, 9.446] },
+      { name: 'Foumban', coords: [5.7267, 10.8986] },
+      { name: 'Kribi', coords: [2.9386, 9.9106] },
+      { name: 'Mbalmayo', coords: [3.5167, 11.5] },
+      { name: 'Buea', coords: [4.1517, 9.2418] }
+    ];
+
+    towns.forEach(function(town) {
+      L.marker(town.coords).addTo(map)
+        .bindPopup('<b>' + town.name + '</b>');
+    });
+  </script>
+</body>
+</html>
